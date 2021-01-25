@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ master ]
+    branches: [ dev ]
   pull_request:
-    branches: [ master ]
+    branches: [ dev ]
 
 jobs:
   build:
@@ -20,11 +20,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Debug --no-restore
     - name: Publish
-      run: dotnet publish --configuration Release
+      run: dotnet publish --configuration Debug
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: Artifact-Master
+        name: Artifact-Dev
         path: /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Debug/netcoreapp3.1/publish/
