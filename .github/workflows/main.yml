@@ -32,6 +32,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Publish
       run: dotnet publish --configuration Release
+    - name: Show files
+      run: dir
     - name: Zip build files
       shell: cmd
       run: |
