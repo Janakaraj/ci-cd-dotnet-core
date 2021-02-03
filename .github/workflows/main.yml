@@ -32,13 +32,11 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Publish
       run: dotnet publish --configuration Release
-    - name: show files
-      run: ls /ci-cd-dotnet-core
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
         name: Artifact-Master
-        path: /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Debug/netcoreapp3.1/publish/
+        path: /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Debug/netcoreapp3.1/publish/
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
       with:
