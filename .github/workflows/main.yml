@@ -33,7 +33,7 @@ jobs:
     - name: Publish
       run: dotnet publish --configuration Release
     - name: show files
-      run: ls /home/runner/work/ci-cd-dotnet-core/cd-cd-dotnet-core
+      run: ls /ci-cd-dotnet-core/cd-cd-dotnet-core
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
