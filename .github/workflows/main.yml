@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: window-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -36,6 +36,7 @@ jobs:
       shell: cmd
       run: |
           cd /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
+          dir
           7z a -tzip Artifact-Master.zip ./
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v14
