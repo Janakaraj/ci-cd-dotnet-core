@@ -32,6 +32,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Publish
       run: dotnet publish --configuration Release
+    - name: show files
+      run: ls
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
