@@ -49,4 +49,4 @@ jobs:
         environment_name: cicddotnetcore-prod
         version_label: ${{ GITHUB.sha }}
         region: ap-south-1
-        deployment_package: /ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/Artifact-Master.zip
+        deployment_package: /a/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/Artifact-Master.zip
