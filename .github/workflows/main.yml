@@ -36,7 +36,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Artifact-Master
-        path: /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
+        path: Application/bin/Release/netcoreapp3.1/publish
+    - name: Show files
+      run: |
+        ls Application/bin/Release/netcoreapp3.1/publish
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
       with:
