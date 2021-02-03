@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -32,26 +32,21 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Publish
       run: dotnet publish --configuration Release
-    - name: Upload Build Artifact
-      uses: actions/upload-artifact@v2
+    - name: Show files
+      run: dir
+    - name: Zip build files
+      shell: cmd
+      run: |
+          cd ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
+          7z a -tzip Artifact-Master.zip ./
+          dir
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v14
       with:
-        name: Artifact-Master
-        path: /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Debug/netcoreapp3.1/publish/
-    - name: Download Build Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: Artifact-Master
-      - name: Zip Artifact
-        shell: cmd
-        run: |
-            7z a -tzip Artifact-Master.zip ./
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v14
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: cicddotnetcore
-          environment_name: cicddotnetcore-prod
-          version_label: 12345
-          region: ap-south-1
-          deployment_package: Artifact-Master.zip
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: cicddotnetcore
+        environment_name: cicddotnetcore-prod
+        version_label: ${{ GITHUB.sha }}
+        region: ap-south-1
+        deployment_package: /a/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/Artifact-Master.zip
