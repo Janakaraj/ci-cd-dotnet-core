@@ -39,6 +39,7 @@ jobs:
       run: |
           cd ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
           7z a -tzip Artifact-Master.zip ./
+          dir
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v14
       with:
@@ -48,4 +49,4 @@ jobs:
         environment_name: cicddotnetcore-prod
         version_label: ${{ GITHUB.sha }}
         region: ap-south-1
-        deployment_package: Artifact-Master.zip
+        deployment_package: /ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/Artifact-Master.zip
