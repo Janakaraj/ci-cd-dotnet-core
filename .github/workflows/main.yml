@@ -37,8 +37,7 @@ jobs:
     - name: Zip build files
       shell: cmd
       run: |
-          cd /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
-          dir
+          cd ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
           7z a -tzip Artifact-Master.zip ./
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v14
