@@ -32,20 +32,10 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Publish
       run: dotnet publish --configuration Release
-    - name: Upload Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: Artifact-Master
-        path: /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
-    - name: Display structure of downloaded files
-      run: ls -R
-    - name: Download Build Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: Artifact-Master
-    - name: Zip Artifact
+    - name: Zip build files
       shell: cmd
       run: |
+          cd /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
           7z a -tzip Artifact-Master.zip ./
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v14
