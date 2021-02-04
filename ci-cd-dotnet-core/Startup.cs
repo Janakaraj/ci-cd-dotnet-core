@@ -24,6 +24,7 @@ namespace ci_cd_dotnet_core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHttpsRedirection(opt => opt.HttpsPort = 443);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
