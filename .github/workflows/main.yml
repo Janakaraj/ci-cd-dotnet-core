@@ -44,4 +44,4 @@ jobs:
         environment_name: cicddotnetcore-prod
         version_label: ${{ GITHUB.run_id }}
         region: ap-south-1
-        deployment_package: buildfiles.zip
+        deployment_package: app/out/buildfiles.zip
