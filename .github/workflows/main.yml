@@ -1,15 +1,13 @@
 name: .NET
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -31,15 +29,12 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish --configuration Release
-    - name: Show files
-      run: dir
+      run: dotnet publish --configuration Release -o 'app/out'
     - name: Zip build files
-      shell: cmd
       run: |
-          cd ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/
-          7z a -tzip Artifact-Master.zip ./
-          dir
+          cd app/out
+          zip -r buildfiles.zip . -x '*.git*'
+          ls
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v14
       with:
@@ -47,6 +42,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: cicddotnetcore
         environment_name: cicddotnetcore-prod
-        version_label: ${{ GITHUB.sha }}
+        version_label: ${{ GITHUB.run_id }}
         region: ap-south-1
-        deployment_package: /a/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core/bin/Release/netcoreapp3.1/publish/Artifact-Master.zip
+        deployment_package: buildfiles.zip
