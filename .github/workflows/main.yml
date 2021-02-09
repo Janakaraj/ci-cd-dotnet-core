@@ -31,8 +31,9 @@ jobs:
     - name: Publish
       run: |
           dotnet publish --configuration Release -o 'app/out'
+          ls /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core
           cd app/out
-          ls
+          ls 
     - name: Upload Artifacts
       if: success()
       uses: actions/upload-artifact@v2
