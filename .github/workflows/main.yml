@@ -29,10 +29,20 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish --configuration Release -o 'app/out'
+      run: |
+          dotnet publish --configuration Release -o 'app/out'
+    - name: Upload Artifacts
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+        path: app/out
+    - name: Download build
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifact
     - name: Zip build files
       run: |
-          cd app/out
           zip -r buildfiles.zip . -x '*.git*'
           ls
     - name: Deploy to EB
