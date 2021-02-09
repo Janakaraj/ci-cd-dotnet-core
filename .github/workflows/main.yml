@@ -1,4 +1,4 @@
-name: .NET
+name: .NET build check
 
 on:
   pull_request:
@@ -29,7 +29,39 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish --configuration Release -o 'app/out'
+      run: |
+          dotnet publish --configuration Release -o 'app/out'
+          ls /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core
+          cd app/out
+          ls 
+    - name: Upload Artifacts
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+        path: app/out
+    - name: Microsoft Teams Notification
+      uses: skitionek/notify-microsoft-teams@master
+      if: always()
+      with:
+        webhook_url: ${{secrets.WEBHOOK_URL}}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
+        dry_run: False
+        
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Download build
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifact
+        path: app/out
     - name: Zip build files
       run: |
           cd app/out
