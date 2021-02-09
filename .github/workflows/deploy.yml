@@ -6,9 +6,46 @@ on:
     branches: [ master ]
 
 jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Caching
+      uses: actions/cache@v2
+      with:
+        path: | 
+          ~/.nuget/packages
+          !~/.nuget/packages/unwanted
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Publish
+      run: |
+          dotnet publish --configuration Release -o 'app/out'
+          ls /home/runner/work/ci-cd-dotnet-core/ci-cd-dotnet-core/ci-cd-dotnet-core
+          cd app/out
+          ls 
+    - name: Upload Artifacts
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+        path: app/out
+
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    needs: build
     steps:
     - name: Checkout
       uses: actions/checkout@v2
