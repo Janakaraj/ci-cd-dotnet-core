@@ -31,6 +31,7 @@ jobs:
     - name: Publish
       run: |
           dotnet publish --configuration Release -o 'app/out'
+          cd app/out
           ls
     - name: Upload Artifacts
       if: success()
