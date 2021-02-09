@@ -49,14 +49,7 @@ jobs:
         job: ${{ toJson(job) }}
         steps: ${{ toJson(steps) }}
         dry_run: False
-
-name: .NET deploy
-
-on:
-  pull_request:
-    types: [closed]
-    branches: [ master ]
-jobs:
+        
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
