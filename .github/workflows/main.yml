@@ -47,9 +47,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Download build
-      uses: actions/download-artifact@v2.1.0
+      uses: actions/download-artifact@v2
       with:
         name: build-artifact
+        path: app/out
     - name: Zip build files
       run: |
           zip -r buildfiles.zip . -x '*.git*'
