@@ -45,3 +45,17 @@ jobs:
         version_label: ${{ GITHUB.run_id }}
         region: ap-south-1
         deployment_package: app/out/buildfiles.zip
+    - name: Send message to ms teams
+      uses: dhollerbach/github-action-send-message-to-ms-teams@1.0.10
+      with:
+        webhook: 'https://promactinfotech1.webhook.office.com/webhookb2/59833687-4fc5-44d9-bddd-aa2339937e3a@94740bf1-1fbc-4402-aaf6-379a7b325701/IncomingWebhook/f1101f643c4a473fb90a7d9d71e66abd/4d7ee94b-234a-4f0f-a0cb-ce0bb4903836'
+        message: '*Who:*${{ github.event.pull_request.user.login }} *State:* ${{ github.event.pull_request.state }} '
+    - name: Microsoft Teams Notification
+      uses: skitionek/notify-microsoft-teams@master
+      if: always()
+      with:
+        webhook_url: 'https://promactinfotech1.webhook.office.com/webhookb2/59833687-4fc5-44d9-bddd-aa2339937e3a@94740bf1-1fbc-4402-aaf6-379a7b325701/IncomingWebhook/f1101f643c4a473fb90a7d9d71e66abd/4d7ee94b-234a-4f0f-a0cb-ce0bb4903836'
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
+        dry_run: False
