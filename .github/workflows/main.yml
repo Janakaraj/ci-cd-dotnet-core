@@ -53,6 +53,7 @@ jobs:
         path: app/out
     - name: Zip build files
       run: |
+          cd app/out
           zip -r buildfiles.zip . -x '*.git*'
           ls
     - name: Deploy to EB
